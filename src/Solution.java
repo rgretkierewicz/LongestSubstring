@@ -1,27 +1,31 @@
 import java.util.HashSet;
 import java.util.Scanner;
 
+
 public class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int longestSs = 1;
-        HashSet<Character> sHash = new HashSet<>();
+        HashSet<Character> sHash = new HashSet<>(); // To hold our characters (non-repeating)
+        int longestSs = 0;  // Default longest substring
+        int sLength = s.length(); // String length
+        int i = 0; // For iterations, tracks index when HashSet adds a new character
+        int j = 0; // For iteration, tracks index when HashSet contains character. Removes char at this index
 
-        for (int i = 0; i < s.length(); i++) {
-            if (sHash.contains(s.charAt(i))) {
-                if (longestSs < sHash.size()) {
-                    longestSs = sHash.size();
-                }
-                sHash.clear();
+        while (i < sLength && j < sLength) {
+
+            if (!sHash.contains(s.charAt(i))) {
+                sHash.add(s.charAt(i));
+                i++;
+                longestSs = Math.max(longestSs, i - j);
             }
-            sHash.add(s.charAt(i));
+            else {
+                sHash.remove(s.charAt(j));
+                j++;
+            }
         }
 
-        // Check if the final value of the hash set is bigger than the current value saved for longest substring
-        if (longestSs < sHash.size()) {
-            longestSs = sHash.size();
-        }
         return longestSs;
     }
+
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
